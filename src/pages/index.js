@@ -23,7 +23,7 @@ const Container = Styled.div`
 const SessionContainer = Styled.div`
     padding: 15px;
     width: 300px;
-    height: 250px;
+    height: 280px;
     box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.25);
 
     @media screen and (max-width: 720px) {
