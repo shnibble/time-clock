@@ -3,6 +3,7 @@ import moment from 'moment'
 import { v4 as uuidv4 } from 'uuid'
 
 const initialState = {
+    sessions: [],
     active_session_task: '',
     active_session_start: '',
     active_session_work: '',
@@ -14,8 +15,7 @@ const initialState = {
     break_active: false,
     break_timer_seconds: 0,
     break_timer_minutes: 0,
-    break_timer_hours: 0,
-    past_sessions: []
+    break_timer_hours: 0
 }
 const SessionContext = React.createContext(initialState)
 
@@ -46,9 +46,9 @@ class SessionProvider extends React.Component {
                 break: this.state.break_timer_hours + 'h ' + this.state.break_timer_minutes + 'm'
             }
 
-            let past_sessions = this.state.past_sessions
-            past_sessions.push(session)
-
+            let sessions = this.state.sessions.slice()
+            sessions.push(session)
+            
             this.setState({
                 active_session_start: '',
                 active_session_task: '',
@@ -62,11 +62,11 @@ class SessionProvider extends React.Component {
                 break_timer_seconds: 0,
                 break_timer_minutes: 0,
                 break_timer_hours: 0,
-                past_sessions
+                sessions
             })
             localStorage.setItem('active_session_start', '')
             localStorage.setItem('active_session_task', '')
-            localStorage.setItem('past_sessions', JSON.stringify(past_sessions))
+            localStorage.setItem('sessions', JSON.stringify(sessions))
         } else {
             window.alert('No active session')
         }
@@ -75,14 +75,14 @@ class SessionProvider extends React.Component {
     deletePastSession = (ev) => {
         if(window.confirm('Are you sure you want to delete this session?')) {
             const id = ev.target.value
-            let past_sessions = this.state.past_sessions
+            let sessions = this.state.sessions
                         
-            const new_sessions = past_sessions.filter(session => {
+            const new_sessions = sessions.filter(session => {
                 return session.id !== id
             })
 
-            this.setState({ past_sessions: new_sessions })
-            localStorage.setItem('past_sessions', JSON.stringify(new_sessions))
+            this.setState({ sessions: new_sessions })
+            localStorage.setItem('sessions', JSON.stringify(new_sessions))
         }
     }
 
@@ -124,11 +124,11 @@ class SessionProvider extends React.Component {
     componentDidMount() {
         const storedStart = localStorage.getItem('active_session_start')
         const storedTask = localStorage.getItem('active_session_task')
-        const storedSessions = JSON.parse(localStorage.getItem('past_sessions'))
+        const storedSessions = JSON.parse(localStorage.getItem('sessions'))
         this.setState({
-            'active_session_start': storedStart,
-            'active_session_task:': storedTask,
-            'past_sessions': storedSessions
+            'active_session_start': storedStart || '',
+            'active_session_task:': storedTask || '',
+            'sessions': storedSessions || []
         })
     }
 
@@ -138,7 +138,7 @@ class SessionProvider extends React.Component {
                 session_active: (this.state.active_session_start)?true:false,
                 active_session_task: this.state.active_session_task,
                 updateActiveSessionTask: this.updateActiveSessionTask,
-                past_sessions: this.state.past_sessions,
+                sessions: this.state.sessions,
                 startSession: this.startSession,
                 endSession: this.endSession,
                 deletePastSession: this.deletePastSession,

@@ -80,7 +80,7 @@ const Log = () => {
                 <Container>
                     <Title>Log</Title>
                     <List>
-                        {session.past_sessions.map(sess => {
+                        {session.sessions.map(sess => {
                             let date = moment(sess.start).format('dddd MM/DD/YYYY')
                             const start = moment(sess.start).format('hh:mm a')
                             const end = moment(sess.end).format('hh:mm a')
