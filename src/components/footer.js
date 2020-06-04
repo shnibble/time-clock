@@ -1,13 +1,13 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-const Container = Styled.header`
+const Container = Styled.footer`
 
 `
 
-const Header = () => (
+const Footer = () => (
     <Container>
     </Container>    
 )
 
-export default Header
+export default Footer
