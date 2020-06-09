@@ -84,6 +84,33 @@ const LimitSelect = Styled.select`
         outline: none;
     }
 `
+const LimitLight = Styled.div`
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin: 2px;
+    background: #ccc;
+    box-shadow: 2px 2px 3px 1px rgba(0,0,0,0.25);
+
+    &.active {
+        animation-name: pulse-red;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+    }
+
+    @keyframes pulse-red {
+        0% {
+            background-color: #ccc;
+        }
+        50% {
+            background-color: red;
+        }
+        100% {
+            background-color: #ccc;
+        }
+    }
+`
 
 class SessionClock extends React.Component {
 
@@ -100,10 +127,12 @@ class SessionClock extends React.Component {
             '02:00:00'
         ],
         work_limit: 'none',
+        work_limit_reached: false,
         work_seconds: 0,
         work_minutes: 0,
         work_hours: 0,
         break_limit: 'none',
+        break_limit_reached: false,
         break_seconds: 0,
         break_minutes: 0,
         break_hours: 0
@@ -148,6 +177,7 @@ class SessionClock extends React.Component {
 
         // push notification
         if (time === work_limit) {
+            this.setState({ work_limit_reached: true })
             addNotification({
                 title: 'Work Time Over',
                 message: 'Your work limit timer has been reached!',
@@ -195,6 +225,7 @@ class SessionClock extends React.Component {
 
         // push notification
         if (time === break_limit) {
+            this.setState({ break_limit_reached: true })
             addNotification({
                 title: 'Break Time Over',
                 message: 'Your break alarm timer has been reached!',
@@ -274,6 +305,8 @@ class SessionClock extends React.Component {
 
         // reset work limit timer to zero
         this.setState({
+            break_limit_reached: false,
+            work_limit_reached: false,
             work_seconds: 0,
             work_minutes: 0,
             work_hours: 0
@@ -292,6 +325,8 @@ class SessionClock extends React.Component {
 
         // reset break limit timer to zero
         this.setState({
+            work_limit_reached: false,
+            break_limit_reached: false,
             break_seconds: 0,
             break_minutes: 0,
             break_hours: 0
@@ -321,6 +356,7 @@ class SessionClock extends React.Component {
     render() {
         let session = this.context
         const { work_timer_hours, work_timer_minutes, work_timer_seconds, break_timer_hours, break_timer_minutes, break_timer_seconds, work_active, break_active } = session
+        const { work_limit_reached, break_limit_reached } = this.state
         return (
             <Container>
 
@@ -328,6 +364,7 @@ class SessionClock extends React.Component {
                     <WorkButton onClick={this.startWorkTimer} disabled={work_active}>Work</WorkButton>
                     <LimitContainer>
                         <LimitLabel>Alarm:</LimitLabel>
+                        <LimitLight className={(work_limit_reached)?'active':''} />
                         <LimitSelect value={this.state.work_limit} onChange={this.updateWorkLimit}>
                             {this.state.limits.map(limit => <option key={`work_limit_option_${limit}`} value={limit}>{limit}</option> )}
                         </LimitSelect>
@@ -345,6 +382,7 @@ class SessionClock extends React.Component {
                     <BreakButton onClick={this.startBreakTimer} disabled={break_active}>Break</BreakButton>
                     <LimitContainer>
                         <LimitLabel>Alarm:</LimitLabel>
+                        <LimitLight className={(break_limit_reached)?'active':''} />
                         <LimitSelect value={this.state.break_limit} onChange={this.updateBreakLimit}>
                             {this.state.limits.map(limit => <option key={`break_limit_option_${limit}`} value={limit}>{limit}</option> )}
                         </LimitSelect>
