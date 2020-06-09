@@ -149,8 +149,7 @@ class SessionClock extends React.Component {
         // push notification
         if (time === work_limit) {
             addNotification({
-                title: 'Work Session Clock',
-                subtitle: 'Work Limit Reached',
+                title: 'Work Time Over',
                 message: 'Your work limit timer has been reached!',
                 native: true
             })
@@ -197,9 +196,8 @@ class SessionClock extends React.Component {
         // push notification
         if (time === break_limit) {
             addNotification({
-                title: 'Work Session Clock',
-                subtitle: 'Break Limit Reached',
-                message: 'Your break limit timer has been reached!',
+                title: 'Break Time Over',
+                message: 'Your break alarm timer has been reached!',
                 native: true
             })
         }
