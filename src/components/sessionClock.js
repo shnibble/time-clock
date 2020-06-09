@@ -128,6 +128,7 @@ class SessionClock extends React.Component {
         if (minutes > 59) {
 
             // reset minutes back to 0
+            minutes = 0
 
             // update hours
             hours++
@@ -175,6 +176,7 @@ class SessionClock extends React.Component {
         if (minutes > 59) {
 
             // reset minutes back to 0
+            minutes = 0
 
             // update hours
             hours++
@@ -227,6 +229,7 @@ class SessionClock extends React.Component {
         if (minutes > 59) {
 
             // reset minutes back to 0
+            minutes = 0
 
             // update hours
             hours++
@@ -259,6 +262,7 @@ class SessionClock extends React.Component {
         if (minutes > 59) {
 
             // reset minutes back to 0
+            minutes = 0
 
             // update hours
             hours++
@@ -325,7 +329,7 @@ class SessionClock extends React.Component {
                 <TimerContainer>
                     <WorkButton onClick={this.startWorkTimer} disabled={work_active}>Work</WorkButton>
                     <LimitContainer>
-                        <LimitLabel>Limit:</LimitLabel>
+                        <LimitLabel>Alarm:</LimitLabel>
                         <LimitSelect value={this.state.work_limit} onChange={this.updateWorkLimit}>
                             {this.state.limits.map(limit => <option key={`work_limit_option_${limit}`} value={limit}>{limit}</option> )}
                         </LimitSelect>
@@ -342,7 +346,7 @@ class SessionClock extends React.Component {
                 <TimerContainer>
                     <BreakButton onClick={this.startBreakTimer} disabled={break_active}>Break</BreakButton>
                     <LimitContainer>
-                        <LimitLabel>Limit:</LimitLabel>
+                        <LimitLabel>Alarm:</LimitLabel>
                         <LimitSelect value={this.state.break_limit} onChange={this.updateBreakLimit}>
                             {this.state.limits.map(limit => <option key={`break_limit_option_${limit}`} value={limit}>{limit}</option> )}
                         </LimitSelect>
